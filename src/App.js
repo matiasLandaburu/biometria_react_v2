@@ -77,13 +77,15 @@ function App() {
       }/>
       <canvas ref={canvasRef} style={
         {
-          position:"absolute",
-          marginLeft:"auto",
-          marginRight:"auto",
+          position: "absolute",
+          marginLeft: "auto",
+          marginRight: "auto",
           left:0,
           right:0,
+          top:200,
+          bot:0,
           textAlign:"center",
-          zIndex:9,
+          zIndex:9, 
           width:480,
           height:240
         }
