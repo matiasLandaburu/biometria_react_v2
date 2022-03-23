@@ -59,33 +59,21 @@ function App() {
         <div className='containter'>
           <div className='row'>
             <div className='col-12'>
-            <Webcam ref={webcamRef} style={ 
+            <Webcam id='webCam' ref={webcamRef} style={ 
         {
-          position: "absolute",
+          zIndex:9,
           marginLeft: "auto",
           marginRight: "auto",
-          left:0,
-          right:0,
-          top:200,
-          textAlign:"center",
-          zIndex:9, 
-          width:480,
-          height:240
+          textAlign:"center"
           
         }
       }/>
-      <canvas ref={canvasRef} style={
+      <canvas id="canvas" ref={canvasRef} style={
         {
-          position: "absolute",
+          zIndex:9,
           marginLeft: "auto",
           marginRight: "auto",
-          left:0,
-          right:0,
-          top:200,
-          textAlign:"center",
-          zIndex:9, 
-          width:480,
-          height:240
+          textAlign:"center"
         }
       }/>
             </div>

@@ -35,3 +35,78 @@
     transform: rotate(360deg);
   }
 }
+
+/* pantalla mediana*/
+@media (min-width: 991.98px){
+  
+  #webCam{
+    width:320px;
+    height: 240px;
+    position: "absolute";
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -100px;
+  }
+  #canvas{
+    width:320px;
+    height: 240px;
+    position: "absolute";
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -100px;
+    width:480;
+    height:240;
+  }
+}
+/* pantalla mediana*/
+@media (max-width: 991.98px){
+  
+  #webCam{
+    width:320px;
+    height: 240px;
+    position: "absolute";
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -100px;
+  }
+  #canvas{
+    width:320px;
+    height: 240px;
+    position: "absolute";
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -100px;
+    width:480;
+    height:240;
+  }
+}
+
+/* pantalla mobile*/
+@media (max-width: 400px) { 
+
+  #webCam{
+    width:160px;
+    height: 120px;
+    position: "absolute";
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -100px;
+  }
+  #canvas{
+    width:100px;
+    height: 40px;
+    position: "absolute";
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -100px;
+    width:480;
+    height:240;
+  }
+
+ }
