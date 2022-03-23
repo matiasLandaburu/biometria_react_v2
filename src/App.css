@@ -79,34 +79,30 @@
     top: 50%;
     left: 50%;
     margin-left: -150px;
-    margin-top: -100px;
-    width:480;
-    height:240;
+    margin-top: -150px;
   }
 }
 
 /* pantalla mobile*/
-@media (max-width: 400px) { 
+@media (max-width: 350px) { 
 
   #webCam{
-    width:270;
-    height: 190px;
+    width:280px;
+    height: 200px;
     position: "absolute";
     top: 50%;
     left: 50%;
     margin-left: -150px;
-    margin-top: -100px;
+    margin-top: -150px;
   }
   #canvas{
-    width:270;
-    height: 190px;
+    width:280px;
+    height: 200px;
     position: "absolute";
     top: 50%;
     left: 50%;
     margin-left: -150px;
-    margin-top: -100px;
-    width:480;
-    height:240;
+    margin-top: -150px;
   }
 
  }

@@ -31,14 +31,18 @@ function App() {
       const video = webcamRef.current.video
       const videoWidth = webcamRef.current.video.videoWidth
       const videoHeight = webcamRef.current.video.videoHeight
-
+      
       // Set video width
       webcamRef.current.video.width = videoWidth
       webcamRef.current.video.height = videoHeight
+      console.log("webCamRef Width:" + webcamRef.current.video.width)
+      console.log("webCamRef Height:" + webcamRef.current.video.height)
 
       // set canvas width
       canvasRef.current.width = videoWidth
       canvasRef.current.height = videoHeight
+      console.log("canvas Width:" + canvasRef.current.width)
+      console.log("canvas Height:" + canvasRef.current.height )
 
       // Make detections
       const face = await net.estimateFaces(video);
