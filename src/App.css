@@ -1,18 +1,14 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
-
+ 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+ 
 .App-header {
   min-height: 100vh;
   display: flex;
@@ -22,11 +18,11 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+ 
 .App-link {
   color: #61dafb;
 }
-
+ 
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -35,10 +31,9 @@
     transform: rotate(360deg);
   }
 }
-
 /* pantalla mediana*/
 @media (min-width: 991.98px){
-  
+ 
   #webCam{
     width:320px;
     height: 240px;
@@ -56,12 +51,12 @@
     left: 50%;
     margin-left: -150px;
     margin-top: -150px;
-
+ 
   }
 }
 /* pantalla mediana*/
 @media (max-width: 991.98px){
-  
+ 
   #webCam{
     width:320px;
     height: 240px;
@@ -72,8 +67,8 @@
     margin-top: -150px;
   }
   #canvas{
-    width:320px;
-    height: 240px;
+    width:480;
+    height:240;
     position: "absolute";
     top: 50%;
     left: 50%;
@@ -81,10 +76,10 @@
     margin-top: -150px;
   }
 }
-
+ 
 /* pantalla mobile*/
 @media (max-width: 350px) { 
-
+ 
   #webCam{
     width:280px;
     height: 200px;
@@ -95,7 +90,7 @@
     margin-top: -150px;
   }
   #canvas{
-    width:280px;
+    width:350px;
     height: 200px;
     position: "absolute";
     top: 50%;
@@ -103,5 +98,5 @@
     margin-left: -150px;
     margin-top: -150px;
   }
-
+ 
  }

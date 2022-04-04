@@ -17,7 +17,8 @@ function App() {
   const [capturing, setCapturing] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState([]);
   var stream;
-  var isRecording = false;
+  const [isRecording, setCurrentRecord] = useState(false)
+  var interval
   //var ctx = null;
  
   //const [ctx, setCtx] = useState(null)
@@ -25,7 +26,7 @@ function App() {
   useEffect(() => {
     setCamera()
     drawCanvas()
-    setTimeout(() => console.log(""), 950)
+    setTimeout(() => console.log(""), 9002)
  
  
  
@@ -34,7 +35,7 @@ function App() {
   const handleDownload = React.useCallback(() => {
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
-        type: "video/webm"
+        type: "video/mp4"
       });
       console.log(blob)
       const url = URL.createObjectURL(blob);
@@ -43,7 +44,7 @@ function App() {
       document.body.appendChild(a);
       a.style = "display: none";
       a.href = url;
-      a.download = "react-webcam-stream-capture.webm";
+      a.download = "react-webcam-stream-capture.mp4";
       a.click();
       window.URL.revokeObjectURL(url);
  
@@ -54,14 +55,18 @@ function App() {
  
   const handleStopCaptureClick = React.useCallback(() => {
     mediaRecorderRef.current.stop();
-    console.log("Para de grabar")
+    console.log("Stop record")
     setCapturing(false);
   }, [mediaRecorderRef, webcamRef, setCapturing]);
  
    const handleStartCaptureClick = React.useCallback(() => {
     setCapturing(true);
-   isRecording = true
+    setCurrentRecord(true)
+ 
     console.log("Start record")
+    if(stream == null){
+      stream = webcamRef.current.stream
+    }
      console.log(stream)
     mediaRecorderRef.current = new MediaRecorder(stream, {
       mimeType: "video/webm"
@@ -85,6 +90,7 @@ function App() {
   );
  
   const drawCanvas = () => {
+    console.log("drawCanvas")
       var ctx = null;
       ctx = canvasRef.current.getContext("2d")
       //console.log(ctx)
@@ -105,17 +111,18 @@ function App() {
  
   // load facemesh
   const runFacemesh =  async() => {
- 
+    console.log("runFaceMesh")
     const net = await facemesh.load({
       inputResolution:{width:480, height:240}, scale:0.8
     })
  
-      const interval = setInterval(() => {
+       interval = setInterval(() => {
+        console.log("From runFaceMesh: ", isRecording)
         if(!isRecording){
           detect(net)
-        }
- 
- 
+        }else{
+          clearInterval(interval);
+        }       
       }, 10000)
  
  
@@ -125,28 +132,42 @@ function App() {
  
  
  
-  // Detect function
-  const setCamera =  async () => {
+  const setCamera = async () => {
+    console.log("SetCamera")
+    // Get video properties
  
-      // Get video properties
-      const video = webcamRef.current.video
-      const videoWidth = webcamRef.current.video.videoWidth
-      const videoHeight = webcamRef.current.video.videoHeight
+    const video = webcamRef.current.video
  
-      // Set video width
-      webcamRef.current.video.width = videoWidth
-      webcamRef.current.video.height = videoHeight
+    var videoWidth = webcamRef.current.video.videoWidth
  
-      // set canvas width
-      canvasRef.current.width = videoWidth
-      canvasRef.current.height = videoHeight
+    var videoHeight = webcamRef.current.video.videoHeight
  
-     stream =  webcamRef.current.stream
-      console.log(stream)
+    videoWidth = videoWidth == 0 ? 480 : videoWidth
  
-  }
+    videoHeight = videoHeight == 0 ? 240 : videoHeight
+ 
+ 
+ 
+    // Set video width
+ 
+    webcamRef.current.video.width = videoWidth
+ 
+    webcamRef.current.video.height = videoHeight
+ 
+    // set canvas width
+ 
+    canvasRef.current.width = videoWidth
+ 
+    canvasRef.current.height = videoHeight
+ 
+    stream = webcamRef.current.stream
+ 
+    console.log(stream)
+ 
+    }
  
   const detect =  async(net) => {
+    console.log("detect")
  
     if(typeof webcamRef.current !== "undefined" && webcamRef.current !== null && webcamRef.current.video.readyState === 4){
       // Get video properties
@@ -173,17 +194,21 @@ function App() {
  
          for (let i = 0; i < predictions.length; i++) {
      //Code goes here
-     var score = predictions[i].faceInViewConfidence;
-     const keyPoints = predictions[i].scaledMesh;
-     const x = keyPoints[i][0];
+      var score = predictions[i].faceInViewConfidence;
+      const keyPoints = predictions[i].scaledMesh;
+      const x = keyPoints[i][0];
       const y = keyPoints[i][1];
       // console.log("x: " + x + "y: " + y)
- 
-      if(x> 300 && x < 382 && y > 200 && y < 280){
+      console.log("isRecording from detect: ", isRecording)
+      console.log("x: " +x + " y: " + y)
+      if(x> 300 && x < 392 && y > 200 && y < 290  && !isRecording){
+        clearInterval(interval)
+        setCurrentRecord(true)
+        console.log("isRecording after change state: " + isRecording)
         handleStartCaptureClick()
         setTimeout(() => {handleStopCaptureClick();}, 4000)
-        setTimeout(() => {handleDownload();}, 5000)
-        setTimeout(() => {handleDownload();}, 6000)
+ 
+ 
  
       }
     // var deltaX = predictions[i].annotations.leftEyeLower0[0][0]  -predictions[i].annotations.rightEyeLower0[0][0] 
@@ -205,18 +230,11 @@ function App() {
   return (
     <div className="App">
       <header className='App-header'>
-      {capturing ? (
-        <button id ="button"onClick={handleStopCaptureClick}>Stop Capture</button>
-      ) : (
-        <button id ="button"onClick={handleStartCaptureClick}>Start Capture</button>
-      )}
-      {recordedChunks.length > 0 && (
-        <button id ="button"onClick={handleDownload}>Download</button>
-      )}
+ 
         <div className='containter'>
           <div className='row'>
             <div className='col-12'>
-            <Webcam ref={webcamRef} style={ 
+            <Webcam id="webCam" ref={webcamRef} style={ 
         {
           position:"absolute",
           marginLeft:"auto",
@@ -225,12 +243,11 @@ function App() {
           right:0,
           textAlign:"center",
           zIndex:9,
-          width:480,
-          height:240
+ 
  
         }
       }/>
-      <canvas ref={canvasRef} style={
+      <canvas id="canvas" ref={canvasRef} style={
         {
           position:"absolute",
           marginLeft:"auto",
@@ -239,8 +256,7 @@ function App() {
           right:0,
           textAlign:"center",
           zIndex:9,
-          width:480,
-          height:240,
+ 
           border:"1px solid red"
         }
       }/>
@@ -253,6 +269,7 @@ function App() {
         </div>
  
       </header>
+ 
     </div>
   );
 }
