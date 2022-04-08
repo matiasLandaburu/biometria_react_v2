@@ -1,3 +1,44 @@
+.App {
+  display: flex;
+  justify-content: center;
+}
+
+.endingView {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner{
+  margin-right: auto;
+  margin-left: auto;
+  /* margin-top: 50px; */
+  /* border: 4px solid rgba(0, 0, 0, .1); */
+  border: 4px solid gray;
+  height: 7px;
+  width: 7px;
+  border-radius: 50%;
+  border-left-color: #09f;
+
+  padding: 20px;
+  animation: spin 1s linear infinite;
+
+}
+
+@keyframes spin {
+  0%{
+      transform: rotate(0deg);
+  }
+  100%{
+      transform: rotate(360deg);
+  }
+}
+
+h1 {
+  padding-top: 40px;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -12,7 +53,7 @@
 .App-header {
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
@@ -32,28 +73,27 @@
   }
 }
 /* pantalla mediana*/
-@media (min-width: 991.98px){
  
-  #webCam{
-    width:320px;
-    height: 240px;
-    position: "absolute";
-    top: 50%;
-    left: 50%;
-    margin-left: -150px;
-    margin-top: -150px;
-  }
-  #canvas{
-    width:320px;
-    height: 240px;
-    position: "absolute";
-    top: 50%;
-    left: 50%;
-    margin-left: -150px;
-    margin-top: -150px;
- 
-  }
+#webCam{
+  width:480px;
+  height: 240px;
+  position: "absolute";
+  top: 50%;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -150px;
 }
+#canvas{
+  width:480px;
+  height: 240px;
+  position: "absolute";
+  top: 50%;
+  left: 50%;
+  margin-left: -150px;
+  margin-top: -150px;
+
+}
+
 /* pantalla mediana*/
 @media (max-width: 991.98px){
  

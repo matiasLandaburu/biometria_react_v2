@@ -5,17 +5,13 @@ import Webcam from 'react-webcam';
 import { tf } from '@tensorflow/tfjs';
 import {drawMesh} from "./utilities.js"
 import { isCompositeComponent } from 'react-dom/test-utils';
-import { AiFillCheckCircle } from "react-icons/ai";
-
-import { BsFillCameraReelsFill } from 'react-icons/bs'
-import CompleteMsgView from './CompleteMsgView';
-
  
  
-function App() {
+ 
+const VideoDetectView = ({setDetect}) => {
   //setup references
   const webcamRef =  useRef(null);
-  const canvasRef = useRef(null);
+  const canvasRef = useRef(null)
  
   const mediaRecorderRef = useRef(null);
   const [recordedChunks, setRecordedChunks] = useState([]);
@@ -28,8 +24,6 @@ function App() {
     capturing:false,
     recording:false
   })
-
-  const [videoData, setVideoData] = useState("")
 
   var interval
   //var ctx = null;
@@ -59,22 +53,24 @@ function App() {
       window.URL.revokeObjectURL(url);
  
       window.URL.revokeObjectURL(url);
-      //setVideo("dowkaodkwaodw")
-      //setRecordedChunks([]);
+      setRecordedChunks([]);
     }
-  }, []);
+  }, [recordedChunks]);
  
   const handleStopCaptureClick = React.useCallback(() => {
     mediaRecorderRef.current.stop();
     console.log("Stop record")
+    //setCapturing(false);
     setRecordObject({
-      recording:true,
+      ...recordObject,
       capturing:false
     })
   }, [mediaRecorderRef, webcamRef, setRecordObject]);
  
    const handleStartCaptureClick = React.useCallback(() => {
-
+    //setCapturing(true);
+    //setCurrentRecord(true)
+ 
     console.log("Start record")
     if(stream == null){
       stream = webcamRef.current.stream
@@ -88,6 +84,8 @@ function App() {
       handleDataAvailable
     );
 
+    setDetect(true)
+
     setRecordObject({
       capturing:true,
       recording:true
@@ -98,25 +96,13 @@ function App() {
  
   const handleDataAvailable = React.useCallback(
     ({ data }) => {
-      console.log("data",data)
       if (data.size > 0) {
-        var dataArray = []
-        dataArray = dataArray.concat(data)
-        //setRecordedChunks((prev) => prev.concat(data));
-        const blob = new Blob(dataArray, {
-          type: "video/mp4"
-        });
-        var reader = new FileReader();
-        reader.readAsDataURL(blob); 
-        reader.onloadend = () => {
-          var base64data = reader.result;                
-          setVideoData(base64data)
-        }
-        //console.log(blob)
-        //handleDownload()
+        setRecordedChunks((prev) => prev.concat(data));
+        console.log(data)
+        handleDownload()
       }
     },
-    []
+    [setRecordedChunks]
   );
  
   const drawCanvas = (color = "blue") => {
@@ -227,81 +213,49 @@ function App() {
   }
  
   return (
-    <div className={videoData !== "" ? "endingView" : "App"}>
-
-      {
-
-        videoData === "" ? (
-          <header className='App-header'>
+    <div className="App">
+      <header className='App-header'>
  
-          <div className='containter'>
-            <div className='row'>
-              <div className='col-12'>
-                <Webcam id="webCam" ref={webcamRef} style={ 
-                  {
-                    position:"absolute",
-                    marginLeft:"auto",
-                    marginRight:"auto",
-                    left:0,
-                    right:0,
-                    textAlign:"center",
-                    zIndex:9,
-          
-          
-                  }
-                }/>
-                <canvas id="canvas" ref={canvasRef} style={
-                  {
-                    position:"absolute",
-                    marginLeft:"auto",
-                    marginRight:"auto",
-                    left:0,
-                    right:0,
-                    textAlign:"center",
-                    zIndex:9,
-          
-                    border:"1px solid red"
-                  }
-                }/>
-  
-              </div>
+        <div className='containter'>
+          <div className='row'>
+            <div className='col-12'>
+              <Webcam id="webCam" ref={webcamRef} style={ 
+                {
+                  position:"absolute",
+                  marginLeft:"auto",
+                  marginRight:"auto",
+                  left:0,
+                  right:0,
+                  textAlign:"center",
+                  zIndex:9,
+        
+        
+                }
+              }/>
+              <canvas id="canvas" ref={canvasRef} style={
+                {
+                  position:"absolute",
+                  marginLeft:"auto",
+                  marginRight:"auto",
+                  left:0,
+                  right:0,
+                  textAlign:"center",
+                  zIndex:9,
+        
+                  border:"1px solid red"
+                }
+              }/>
+
             </div>
           </div>
-                        
-        </header>
-        ):(
-          <h1>Analisis realizado</h1>
-        )
-
-      } 
-              
-      {
-        videoData !== "" ? (
-          <CompleteMsgView className="App-header"/>
-        ): recordObject.recording ? (
-          <div style={{
-              paddingTop:40,
-              display:"flex",
-              flexDirection:"column",
-              alignItems:"center"
-            }}>
-            <AiFillCheckCircle style={{
-              width:50,
-              height:50,
-              color:"#33FFDF"
-            }}/>
-            <h2>Grabando video ...</h2>
-            <div className='spinner'></div>
-          </div>
-        ):(
-          <h1>Centre su rostro en el rectangulo</h1>
-        )
-      }
-
+        </div>
+                      
+      </header>
+ 
     </div>
   );
 }
  
  
  
-export default App;
+export default VideoDetectView;
