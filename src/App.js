@@ -42,28 +42,6 @@ function App() {
     runFacemesh()
   },[])
  
-  const handleDownload = React.useCallback(() => {
-    if (recordedChunks.length) {
-      const blob = new Blob(recordedChunks, {
-        type: "video/mp4"
-      });
-      console.log(blob)
-      const url = URL.createObjectURL(blob);
-      console.log(url)
-      const a = document.createElement("a");
-      document.body.appendChild(a);
-      a.style = "display: none";
-      a.href = url;
-      a.download = "react-webcam-stream-capture.mp4";
-      a.click();
-      window.URL.revokeObjectURL(url);
- 
-      window.URL.revokeObjectURL(url);
-      //setVideo("dowkaodkwaodw")
-      //setRecordedChunks([]);
-    }
-  }, []);
- 
   const handleStopCaptureClick = React.useCallback(() => {
     mediaRecorderRef.current.stop();
     console.log("Stop record")
@@ -129,9 +107,12 @@ function App() {
       //ctx.rect(0, 0, 100, 100);
       const h = canvasRef.current.height
       const w = canvasRef.current.width
-      var x = w/2 - (w/10)
+      var x = w/2
       var y = h/2
-      ctx.rect(w/2 - (w/10), h/2 - (h/4), w/5, h/2)
+      
+      //ctx.rect(w/2 - (w/10), h/2 - (h/4), w/5, h/2)
+      ctx.ellipse(x, y, x/4, y/3, Math.PI / 2, 0, 2 * Math.PI);
+      
       ctx.stroke();
       console.log("x: " + x + "y: " + y)
   }
@@ -164,8 +145,15 @@ function App() {
     // Get video properties
  
     const video = webcamRef.current.video
-    var videoWidth = webcamRef.current.video.videoWidth
-    var videoHeight = webcamRef.current.video.videoHeight
+    const videoObj = document.getElementsByTagName('video')
+    console.log(video)
+    console.log(video.clientWidth)
+    var videoWidth = webcamRef.current.video.clientWidth
+    var videoHeight = webcamRef.current.video.clientHeight
+    console.log({
+      w:videoWidth,
+      h:videoHeight
+    })
     videoWidth = videoWidth == 0 ? 480 : videoWidth
     videoHeight = videoHeight == 0 ? 240 : videoHeight
  
@@ -259,8 +247,8 @@ function App() {
                     right:0,
                     textAlign:"center",
                     zIndex:9,
-          
-                    border:"1px solid red"
+                    borderRadius:10,
+                    boxShadow:40
                   }
                 }/>
   
@@ -285,10 +273,10 @@ function App() {
               flexDirection:"column",
               alignItems:"center"
             }}>
-            <AiFillCheckCircle style={{
+            <BsFillCameraReelsFill style={{
               width:50,
               height:50,
-              color:"#33FFDF"
+              // color:"#33FFDF"
             }}/>
             <h2>Grabando video ...</h2>
             <div className='spinner'></div>
