@@ -32,6 +32,7 @@ function App() {
 
   const [videoData, setVideoData] = useState("")
   const [base64Data, setBase64Data] = useState("")
+  const [finish, setFinish] = useState(false)
 
   var interval
   //var ctx = null;
@@ -47,7 +48,7 @@ function App() {
     window.location.reload()
   }
   function send(){
-    window.location.reload()
+    setFinish(true)
   }
  
   const handleStopCaptureClick = React.useCallback(() => {
@@ -276,7 +277,21 @@ function App() {
       } 
               
       {
-        videoData !== "" ? (
+
+        finish ? (
+          <div style={{
+            display:"flex",
+            flexDirection:"column",
+            alignItems:"center"
+            }}>
+                <AiFillCheckCircle style={{
+                    width:100,
+                    height:100,
+                    color:"#33FFDF"
+                }}/>
+                <h2>Felicitaciones</h2>
+          </div>
+        ) : videoData !== "" ? (
           
           <><video src={videoData} controls autoPlay loop />
           <Button onClick={reload} className="mr-3">Repetir</Button>
