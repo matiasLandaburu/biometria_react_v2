@@ -9,6 +9,7 @@ import { AiFillCheckCircle } from "react-icons/ai";
 
 import { BsFillCameraReelsFill } from 'react-icons/bs'
 import CompleteMsgView from './CompleteMsgView';
+import { Button } from 'reactstrap';
 
  
  
@@ -30,6 +31,7 @@ function App() {
   })
 
   const [videoData, setVideoData] = useState("")
+  const [base64Data, setBase64Data] = useState("")
 
   var interval
   //var ctx = null;
@@ -41,6 +43,12 @@ function App() {
     drawCanvas()
     runFacemesh()
   },[])
+  function reload(){
+    window.location.reload()
+  }
+  function send(){
+    window.location.reload()
+  }
  
   const handleStopCaptureClick = React.useCallback(() => {
     mediaRecorderRef.current.stop();
@@ -84,11 +92,15 @@ function App() {
         const blob = new Blob(dataArray, {
           type: "video/mp4"
         });
+        const url = URL.createObjectURL(blob);
+        console.log(url)
         var reader = new FileReader();
         reader.readAsDataURL(blob); 
+        console.log(reader)
         reader.onloadend = () => {
-          var base64data = reader.result;                
-          setVideoData(base64data)
+          var base64data = reader.result;           
+          setBase64Data(base64Data)   
+          setVideoData(url)
         }
         //console.log(blob)
         //handleDownload()
@@ -265,7 +277,10 @@ function App() {
               
       {
         videoData !== "" ? (
-          <CompleteMsgView className="App-header"/>
+          
+          <><video src={videoData} controls autoPlay loop />
+          <Button onClick={reload} className="mr-3">Repetir</Button>
+          <Button onClick={send} className="mr-3">Enviar</Button></>
         ): recordObject.recording ? (
           <div style={{
               paddingTop:40,
